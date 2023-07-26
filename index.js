@@ -17,14 +17,12 @@ const mdLinks = (ruta) => {
       }
     }
   });
-  
   // rutaAbsolute(ruta);
   // esArchivoMD(ruta);
   // validarRuta(ruta);
 };
 
-module.exports = {
-  // ..
+export {
   mdLinks,
 };
 
