@@ -50,6 +50,58 @@ function directorioOArchivo(ruta) {
   return arrayArchivos;
 }
 
+// Función para encontrar links en el contenido de un archivo md
+function obtenerLinks(rutaArchivo) {
+  const contenido = fs.readFileSync(rutaArchivo, 'utf8');
+  const linksEncontrados = [];
+  const linkRegex = /\[([^\]]+)\]\((http[s]?:\/\/[^\)]+)\)/g;
+
+  let match;
+  while ((match = linkRegex.exec(contenido)) !== null) {
+    const text = match[1].slice(0, 50);
+    const href = match[2];
+    linksEncontrados.push({ href, text, file: rutaArchivo }); // inclui atributo file
+  }
+  return linksEncontrados;
+}
+
+// validar link y obtener el código de respuesta HTTP con axios
+function validarLink(url) {
+  return axios
+    .get(url)
+    .then((res) => {
+      const status = res.status;
+      const ok = res.statusText === 'OK' ? 'ok' : 'fail';
+      return { status, ok };
+    })
+    .catch(() => {
+      return { status: 404, ok: 'fail' };
+    });
+}
+
+//estadisticas
+function estadisticas(links) {
+  const totalLinks = links.length;
+
+  //obtener los links unicos
+  const linksUnicos = {};
+  links.forEach((link) => {
+    linksUnicos[link.href] = true;
+  });
+  const totalLinksUnicos = Object.keys(linksUnicos).length;
+
+  // filtrar los enlaces rotos
+  const linksRotos = links.filter((link) => link.ok === 'fail');
+  const totalLinksRotos = linksRotos.length;
+
+  return {
+    total: totalLinks,
+    unique: totalLinksUnicos,
+    broken: totalLinksRotos,
+  };
+}
+
+
 // -------------------------------------------------
 
 export {
@@ -57,4 +109,7 @@ export {
   rutaAbsolute,
   esArchivoMD,
   directorioOArchivo,
+  obtenerLinks,
+  estadisticas,
+  validarLink
 };
