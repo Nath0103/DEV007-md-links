@@ -1,7 +1,6 @@
-import { validarRuta, rutaAbsolute,directorio} from "../funcions";
+import { validarRuta, rutaAbsolute,esArchivoMD} from "../funcions";
 import fs from "fs";
-
-//:::::::::::::::::::::::::::::::VALIDAR SI LA RUTA EXISTE TEST::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//:::::::::::::::::::::::::::::::VALIDAR SI LA RUTA EXISTE TEST::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 describe("validarRuta", () => {
   test("debería retornar true si la ruta existe (archivo)", () => {
     // __filename
@@ -20,7 +19,7 @@ describe("validarRuta", () => {
   });
 
 });
-//:::::::::::::::::::::::::::::::RUTA ABSOLUTA TEST::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//:::::::::::::::::::::::::::::::RUTA ABSOLUTA TEST:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 describe("rutaAbsolute", () => {
   test("debería convertir una ruta relativa a una ruta absoluta", () => {
     const rutaRelativa = "README.md";
@@ -34,31 +33,30 @@ describe("rutaAbsolute", () => {
     expect(resultado).toBe(rutaAbsoluta);
   });
 });
-//:::::::::::::::::::::::::::::::COMPROBAR SI ES UNDIRECTORIO TEST::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-describe("directorio", () => {
-  test("debería reconocer que es un directorio", () => {
-    // Crear un directorio temporal para la prueba
-    const rutaDirectorio = './prueba1';
-    fs.mkdirSync(rutaDirectorio);
+//:::::::::::::::::::::::::::::::COMPROBAR SI ES UN MD:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    // Llamar a la función y verificar que retorne true (es un directorio)
-    const resultado = directorio(rutaDirectorio);
+describe("esArchivoMD", () => {
+  test("debería retornar true para un archivo con extensión .md", () => {
+    const ruta = 'README.md';
+    const resultado = esArchivoMD(ruta);
     expect(resultado).toBe(true);
-
-    // Eliminar el directorio temporal
-    fs.rmdirSync(rutaDirectorio);
   });
 
-  test("debería reconocer que NO es un directorio", () => {
-    // Crear un archivo temporal para la prueba
-    const rutaArchivo = './README.md';
-    fs.writeFileSync(rutaArchivo, 'Contenido del archivo');
-
-    // Llamar a la función y verificar que retorne false (no es un directorio)
-    const resultado = directorio(rutaArchivo);
+  test("debería retornar false para un archivo sin extensión .md", () => {
+    const ruta = './puebas/hola.txt';
+    const resultado = esArchivoMD(ruta);
     expect(resultado).toBe(false);
+  });
 
-    // Eliminar el archivo temporal
-    fs.unlinkSync(rutaArchivo);
+  test("debería retornar false para una carpeta", () => {
+    const ruta = './prueba1';
+    const resultado = esArchivoMD(ruta);
+    expect(resultado).toBe(false);
+  });
+
+  test("debería retornar false para una ruta inválida", () => {
+    const ruta = './ruta_que_no_existe';
+    const resultado = esArchivoMD(ruta);
+    expect(resultado).toBe(false);
   });
 });
