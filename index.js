@@ -1,4 +1,4 @@
-import { rutaAbsolute, validarRuta, directorioOArchivo } from "./funcions.js";
+import { rutaAbsolute, validarRuta, directorioOArchivo, obtenerLinks } from "./funcions.js";
 
 // promesa
 const mdLinks = (ruta) => {
