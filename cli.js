@@ -42,7 +42,6 @@ function resultados(resultado, options) {
 
 mdLinks(ruta, options)
   .then((resultado) => {
-    console.log(resultado.stats)
     resultados(resultado, options);
   })
   .catch((error) => {

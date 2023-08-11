@@ -25,7 +25,8 @@ const mdLinks = (ruta, options) => {
       //-------------------VALIDATE Y STATS--------------------------------
       Promise.all(linksConValidacion)
         .then((linksValidados) => {
-          if (options.validate &&  options.stats) {
+
+          if (options.validate && options.stats) {
             const linksConValidacion = linksValidados.map((link) => {
               return validarLink(link.href).then((result) => {
                 return {
@@ -42,17 +43,54 @@ const mdLinks = (ruta, options) => {
               .then((linksConValidacion) => {
                 const stats = estadisticas(linksConValidacion);
                 resolve({
-                  links:linksConValidacion,
+                  links: linksConValidacion,
                   stats: stats,
                 });
-                
               })
               .catch((error) => {
                 console.error(error);
                 reject(error);
               });
+          } else if (options.validate) {
+            const linksConValidacion = linksValidados.map((link) => {
+              return validarLink(link.href).then((result) => {
+                return {
+                  href: link.href,
+                  text: link.text,
+                  file: link.file,
+                  status: result.status,
+                  ok: result.ok,
+                };
+              });
+            });
+            Promise.all(linksConValidacion)
+              .then((linksConValidacion) => {
+                const stats = estadisticas(linksConValidacion);
+                resolve({
+                  links: linksConValidacion,
+                  stats: stats,
+                });
+              })
+              .catch((error) => {
+                console.error(error);
+                reject(error);
+              });
+          }else if (options.stats) {
+            Promise.all(links)
+              .then((links) => {
+                const stats = estadisticas(links);
+                resolve({
+                  links: links,
+                  stats: stats,
+                });
+              })
+              .catch((error) => {
+                console.error(error);
+                reject(error);
+              });
+          }
           
-          } else {
+          else {
             resolve({ links: linksValidados });
           }
         })

@@ -15,7 +15,7 @@
             "outFiles": [
                 "${workspaceFolder}/**/*cli.js"
             ],
-            "args": ["pruebas/README.md", "--stats"]
+            "args": ["pruebas/README.md", "--validate"]
         }
     ]
 }
