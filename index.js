@@ -12,6 +12,7 @@ const mdLinks = (ruta, options) => {
   return new Promise((resolve, reject) => {
     if (validarRuta(ruta)) {
       const rutaAbsoluta = rutaAbsolute(ruta);
+      console.log(rutaAbsoluta)
       const archivosMd = directorioOArchivo(rutaAbsoluta);
       const links = [];
       archivosMd.forEach((link) => {

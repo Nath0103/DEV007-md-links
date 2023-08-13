@@ -29,6 +29,7 @@ function directorioOArchivo(ruta) {
 
   const contenedorArchivos = fs.statSync(ruta);
   if (contenedorArchivos.isFile()) {
+    console.log(contenedorArchivos)
     if (esArchivoMD(ruta)) {
       arrayArchivos.push(ruta);
     }
@@ -48,7 +49,7 @@ function directorioOArchivo(ruta) {
       }
     });
   }
-  // console.log(arrayArchivos)
+  //  console.log(arrayArchivos)
   return arrayArchivos;
 }
 
