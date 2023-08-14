@@ -48,7 +48,7 @@ function directorioOArchivo(ruta) {
       }
     });
   }
-  // console.log(arrayArchivos)
+  //  console.log(arrayArchivos)
   return arrayArchivos;
 }
 
