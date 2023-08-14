@@ -29,7 +29,6 @@ function directorioOArchivo(ruta) {
 
   const contenedorArchivos = fs.statSync(ruta);
   if (contenedorArchivos.isFile()) {
-    console.log(contenedorArchivos)
     if (esArchivoMD(ruta)) {
       arrayArchivos.push(ruta);
     }
